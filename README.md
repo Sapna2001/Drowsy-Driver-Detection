@@ -16,3 +16,6 @@ It will detect that the driver's eyes are closed for a few seconds. This system 
 - Bhagya M S
 - Devapriya Suresh V
 - Hari Sapna Nair
+
+## References
+- https://datahacker.rs/011-how-to-detect-eye-blinking-in-videos-using-dlib-and-opencv-in-python/
