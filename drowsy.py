@@ -12,7 +12,7 @@ from imutils import face_utils
 
 
 # Initializing the camera and taking the instance
-capture = cv2.Videocaptureture(0)
+capture = cv2.VideoCapture(0)
 
 # Initializing the face detector and landmark detector
 detector = dlib.get_frontal_face_detector()
