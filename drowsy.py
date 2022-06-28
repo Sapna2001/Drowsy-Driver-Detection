@@ -7,9 +7,14 @@ import numpy as np
 # Dlib for deep learning based Modules and face landmark detection
 import dlib
 
-# face_utils for basic opeEARns of conversion
+# face_utils for basic operationsns of conversion
 from imutils import face_utils
 
+# 
+import time 
+
+# 
+from scipy.spatial import distance as dist
 
 # Initializing the camera and taking the instance
 capture = cv2.VideoCapture(0)
@@ -26,6 +31,9 @@ drowsy = 0
 active = 0
 status=""
 color=(0,0,0)
+
+yawn_thresh = 22
+ptime = 0
 
 def computeEuclideanDistance(ptA,ptB):
 	dist = np.linalg.norm(ptA - ptB)
@@ -44,8 +52,25 @@ def blinked(a,b,c,d,e,f):
 	else:
 		return 0
 
+def cal_yawn(shape): 
+    top_lip = shape[50:53]
+    top_lip = np.concatenate((top_lip, shape[61:64]))
+  
+    low_lip = shape[56:59]
+    low_lip = np.concatenate((low_lip, shape[65:68]))
+  
+    top_mean = np.mean(top_lip, axis=0)
+    low_mean = np.mean(low_lip, axis=0)
+  
+    distance = dist.euclidean(top_mean,low_mean)
+    return distance
+
 while True:
-    _, frame = capture.read()
+    success,frame = capture.read()
+  
+    if not success : 
+        break
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     faces = detector(gray)
@@ -69,8 +94,13 @@ while True:
 
         right_blink = blinked(landmarks[42],landmarks[43], 
         	landmarks[44], landmarks[47], landmarks[46], landmarks[45])
+
+        lip = landmarks[48:60]
+  
+        #-------Calculating the lip distance-----#
+        lip_dist = cal_yawn(landmarks)
         
-        # Now judge what to do for the eye blinks
+        # Conditions 
         if(left_blink == 0 or right_blink == 0):
             sleep += 1
             drowsy = 0
@@ -78,6 +108,15 @@ while True:
             if(sleep > 6):
                 status="SLEEPING !!!"
                 color = (255,0,0)
+
+        elif(lip_dist > yawn_thresh):
+                sleep += 1
+                drowsy = 0
+                active = 0
+                if(sleep > 3):
+                    status="Drowsy !"
+                    color = (0,0,255)
+
 
         elif(left_blink == 1 or right_blink == 1):
             sleep += 1
