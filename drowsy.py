@@ -10,10 +10,7 @@ import dlib
 # face_utils for basic operationsns of conversion
 from imutils import face_utils
 
-# 
-import time 
-
-# 
+# Calcuate 
 from scipy.spatial import distance as dist
 
 # Initializing the camera and taking the instance
@@ -35,13 +32,9 @@ color=(0,0,0)
 yawn_thresh = 22
 ptime = 0
 
-def computeEuclideanDistance(ptA,ptB):
-	dist = np.linalg.norm(ptA - ptB)
-	return dist
-
 def blinked(a,b,c,d,e,f):
-	up = computeEuclideanDistance(b,d) + computeEuclideanDistance(c,e)
-	down = computeEuclideanDistance(a,f)
+	up = dist.euclidean(b,d) + dist.euclidean(c,e)
+	down = dist.euclidean(a,f)
 	EAR = up / (2.0*down)
 
 	# Checking if it is blinked
@@ -97,7 +90,7 @@ while True:
 
         lip = landmarks[48:60]
   
-        #-------Calculating the lip distance-----#
+        # Calculating the lip distance
         lip_dist = cal_yawn(landmarks)
         
         # Conditions 
