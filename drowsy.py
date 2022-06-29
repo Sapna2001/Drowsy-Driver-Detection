@@ -10,7 +10,7 @@ import dlib
 # face_utils for basic operationsns of conversion
 from imutils import face_utils
 
-# Calcuate 
+# Calcuate euclidean distance 
 from scipy.spatial import distance as dist
 
 # Initializing the camera and taking the instance
@@ -22,50 +22,60 @@ detector = dlib.get_frontal_face_detector()
 # Detect 68 landmarks
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
-# Status marking for current state
+# Current state
 sleep = 0
 drowsy = 0
 active = 0
-status=""
-color=(0,0,0)
+status = ""
+color = (0,0,0)
 
-yawn_thresh = 22
-ptime = 0
+yawn_threshold = 22
 
-def blinked(a,b,c,d,e,f):
+# Eye closing detection
+def calculate_EAR(a,b,c,d,e,f):
 	up = dist.euclidean(b,d) + dist.euclidean(c,e)
 	down = dist.euclidean(a,f)
-	EAR = up / (2.0*down)
 
-	# Checking if it is blinked
+    # Eye Aspect Ratio
+	EAR = up / (2.0 * down)
+
+	# Checking if it is calculate_EAR
+    # Active
 	if(EAR > 0.25):
 		return 2
+    # Drowsy
 	elif(EAR > 0.21 and EAR <= 0.25):
 		return 1
+    # Sleeping
 	else:
 		return 0
 
-def cal_yawn(shape): 
+# Yawning detection
+def calculate_yawning(shape): 
     top_lip = shape[50:53]
     top_lip = np.concatenate((top_lip, shape[61:64]))
   
-    low_lip = shape[56:59]
-    low_lip = np.concatenate((low_lip, shape[65:68]))
+    bottom_lip = shape[56:59]
+    bottom_lip = np.concatenate((bottom_lip, shape[65:68]))
   
-    top_mean = np.mean(top_lip, axis=0)
-    low_mean = np.mean(low_lip, axis=0)
+    top_mean = np.mean(top_lip, axis = 0)
+    bottom_mean = np.mean(bottom_lip, axis = 0)
   
-    distance = dist.euclidean(top_mean,low_mean)
+    distance = dist.euclidean(top_mean,bottom_mean)
     return distance
 
+# Capture image till keyboard interrupt received
 while True:
     success,frame = capture.read()
   
+    # If video capture not successful
     if not success : 
         break
 
+    # Change to gray scale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    
+    # Detect landmarks
     faces = detector(gray)
 
     # Detected face in faces array
@@ -78,23 +88,23 @@ while True:
         face_frame = frame.copy()
         cv2.rectangle(face_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
+        # Find landmarks on the face
         landmarks = predictor(gray, face)
         landmarks = face_utils.shape_to_np(landmarks)
 
-        # The numbers are actually the landmarks which will show eye
-        left_blink = blinked(landmarks[36],landmarks[37], 
+        # # Calculate EAR
+        left_blink = calculate_EAR(landmarks[36],landmarks[37], 
         	landmarks[38], landmarks[41], landmarks[40], landmarks[39])
 
-        right_blink = blinked(landmarks[42],landmarks[43], 
+        right_blink = calculate_EAR(landmarks[42],landmarks[43], 
         	landmarks[44], landmarks[47], landmarks[46], landmarks[45])
-
-        lip = landmarks[48:60]
   
         # Calculating the lip distance
-        lip_dist = cal_yawn(landmarks)
+        lip = landmarks[48:60]
+        lip_dist = calculate_yawning(landmarks)
         
         # Conditions 
-        if(left_blink == 0 or right_blink == 0):
+        if(left_blink == 0 and right_blink == 0):
             sleep += 1
             drowsy = 0
             active = 0
@@ -102,7 +112,7 @@ while True:
                 status="SLEEPING !!!"
                 color = (255,0,0)
 
-        elif(lip_dist > yawn_thresh):
+        elif(lip_dist > yawn_threshold):
                 sleep += 1
                 drowsy = 0
                 active = 0
