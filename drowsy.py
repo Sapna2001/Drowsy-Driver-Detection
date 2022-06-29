@@ -104,7 +104,7 @@ while True:
         lip_dist = calculate_yawning(landmarks)
         
         # Conditions 
-        if(left_blink == 0 and right_blink == 0):
+        if(left_blink == 0 or right_blink == 0):
             sleep += 1
             drowsy = 0
             active = 0
