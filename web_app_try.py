@@ -1,33 +1,33 @@
 import numpy as np
 import cv2
-from tkinter import *
-import tkinter.messagebox
+from Tkinter import *
+import tkMessageBox
 import dlib
 from imutils import face_utils
 from scipy.spatial import distance as dist
 
 root=Tk()
-root.geometry('600x670')
+root.attributes('-fullscreen', True)
 frame = Frame(root, relief=RIDGE, borderwidth=2)
 frame.pack(fill=BOTH,expand=1)
 root.title('Drowsy Driver Detection')
 frame.config(background='light blue')
 label = Label(frame, text="Drowsy Driver Detection",bg='light blue',font=('Times 35 bold'))
 label.pack(side=TOP)
-filename = PhotoImage(file="F:\S6\MINIPROJECT\drowsiness_detection\Drowsy-Driver-Detection\Web App\demo.png")
+filename = PhotoImage(file="demo.png")
 background_label = Label(frame,image=filename)
 background_label.pack(side=TOP)
 
 
 
 def hel():
+   print("help")
    help(cv2)
 
 def anotherWin():
-   tkinter.messagebox.showinfo("About",'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
+   print("about")
+   tkMessageBox.showinfo("About",'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
                                     
-   
-
 menu = Menu(root)
 root.config(menu=menu)
 
@@ -177,7 +177,7 @@ def webdet():
                 cv2.circle(face_frame, (x, y), 1, (255, 255, 255), -1)
 
             cv2.imshow("Frame", frame)
-            cv2.imshow("Result of detector", face_frame)
+            # cv2.imshow("Result of detector", face_frame)
 
         # Wait for any keyboard event to happen  
         key = cv2.waitKey(1)
