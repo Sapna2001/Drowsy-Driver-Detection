@@ -17,6 +17,8 @@ from scipy.spatial import distance as dist
 from Tkinter import *
 import tkMessageBox
 
+import sys
+
 # Creating UI
 root = Tk()
 root.attributes('-fullscreen', True)
@@ -40,7 +42,6 @@ def about_box():
     tkMessageBox.showinfo(
         "About", 'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
 
-
 # Menu options
 menu = Menu(root)
 root.config(menu = menu)
@@ -55,8 +56,8 @@ sub_menu2.add_command(label = "About the software", command = about_box)
 
 # Close the app
 def close_window():
-    root.destroy()
-    exit()
+    print("close")
+    quit()
 
 
 def web_detect():
@@ -127,14 +128,6 @@ def web_detect():
 
         # Detected face in faces array
         for face in faces:
-            x1 = face.left()
-            y1 = face.top()
-            x2 = face.right()
-            y2 = face.bottom()
-
-            face_frame = frame.copy()
-            cv2.rectangle(face_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
             # Find landmarks on the face
             landmarks = predictor(gray, face)
             landmarks = face_utils.shape_to_np(landmarks)
@@ -188,10 +181,9 @@ def web_detect():
             cv2.imshow("Frame", frame)
 
         # Wait for any keyboard event to happen
-        key = cv2.waitKey(1)
-        if key == 27:
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            capture.release()
             break
-
 
 # Buttons
 button_open = Button(frame, padx = 5, pady = 5, width = 39, bg = 'white', fg = 'black',
