@@ -40,8 +40,9 @@ menu.add_cascade(label="About",menu=subm2)
 subm2.add_command(label="Driver Cam",command=anotherWin)
 
 
-def exitt():
-   exit()
+def close_window():
+    root.destroy()
+    exit()
 
 
 def webdet():
@@ -185,10 +186,10 @@ def webdet():
       	    break 
          
 but3=Button(frame,padx=5,pady=5,width=39,bg='white',fg='black',relief=GROOVE,command=webdet,text='Open Cam & Detect',font=('helvetica 15 bold'))
-but3.place(x=50,y=250)
+but3.place(relx=0.5,rely=0.3,anchor=CENTER)
 
-but5=Button(frame,padx=5,pady=5,width=5,bg='white',fg='black',relief=GROOVE,text='EXIT',command=exitt,font=('helvetica 15 bold'))
-but5.place(x=240,y=478)
+but5=Button(frame,padx=5,pady=5,width=5,bg='white',fg='black',relief=GROOVE,text='EXIT',command=close_window,font=('helvetica 15 bold'))
+but5.place(relx=0.5,rely=0.7,anchor=CENTER)
 
 
 root.mainloop()
