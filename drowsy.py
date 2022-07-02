@@ -182,6 +182,7 @@ def web_detect():
 
         # Wait for any keyboard event to happen
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
             capture.release()
             break
 
