@@ -17,7 +17,8 @@ from scipy.spatial import distance as dist
 from Tkinter import *
 import tkMessageBox
 
-import sys
+# To play alert sound
+from pygame import mixer
 
 # Creating UI
 root = Tk()
@@ -56,7 +57,6 @@ sub_menu2.add_command(label = "About the software", command = about_box)
 
 # Close the app
 def close_window():
-    print("close")
     quit()
 
 
@@ -142,6 +142,9 @@ def web_detect():
             # Calculating the lip distance
             lip_dist = calculate_yawning(landmarks)
 
+            # Mixer settings
+            mixer.init()
+
             # Conditions
             if(left_blink == 0 or right_blink == 0):
                 sleep += 1
@@ -150,6 +153,9 @@ def web_detect():
                 if(sleep > 6):
                     status = "SLEEPING !!!"
                     color = (255, 0, 0)
+                    mixer.music.load("audio/sleeping.wav")
+                    mixer.music.set_volume(0.8)
+                    mixer.music.play()
 
             elif(lip_dist > yawn_threshold):
                 drowsy += 1
@@ -158,6 +164,9 @@ def web_detect():
                 if(drowsy > 3):
                     status = "Drowsy !"
                     color = (0, 0, 255)
+                    mixer.music.load("audio/drowsy.WAV")
+                    mixer.music.set_volume(0.8)
+                    mixer.music.play()
 
             elif(left_blink == 1 or right_blink == 1):
                 drowsy += 1
@@ -166,6 +175,9 @@ def web_detect():
                 if(drowsy > 6):
                     status = "Drowsy !"
                     color = (0, 0, 255)
+                    mixer.music.load("audio/drowsy.WAV")
+                    mixer.music.set_volume(0.8)
+                    mixer.music.play()
 
             else:
                 sleep = 0
@@ -174,6 +186,7 @@ def web_detect():
                 if(active > 6):
                     status = "Active :)"
                     color = (0, 255, 0)
+                mixer.music.stop()
 
             cv2.putText(frame, status, (100, 100),
                         cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 3)
