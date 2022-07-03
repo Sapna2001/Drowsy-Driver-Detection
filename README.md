@@ -11,6 +11,12 @@ involvement.
 A Python based Drowsy Driver Detection System is a safety technology that can prevent accidents that are caused by drivers who fall asleep while driving. 
 It will detect that the driver's eyes are closed for a few seconds. This system will alert the driver when drowsiness is detected.
 
+## Run the App
+To run the app use the following command:
+```
+python drowsy.py
+```
+
 ## Team Members
 - Arathi Karuna M S
 - Bhagya M S
@@ -19,3 +25,4 @@ It will detect that the driver's eyes are closed for a few seconds. This system 
 
 ## References
 - https://datahacker.rs/011-how-to-detect-eye-blinking-in-videos-using-dlib-and-opencv-in-python/
+- http://www.journal-aquaticscience.com/article_136033_c96172a0f080d21c810d21c25036952d.pdf
