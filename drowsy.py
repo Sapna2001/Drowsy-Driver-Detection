@@ -151,8 +151,7 @@ def web_detect():
                 active = 0
                 drowsy = 0
                 if(sleep > 6):
-                    status = "SLEEPING !!!"
-                    color = (255, 0, 0)
+                    # status = "SLEEPING !!!"
                     mixer.music.load("audio/sleeping.wav")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -162,8 +161,7 @@ def web_detect():
                 sleep = 0
                 active = 0
                 if(drowsy > 3):
-                    status = "Drowsy !"
-                    color = (0, 0, 255)
+                    # status = "Drowsy !"
                     mixer.music.load("audio/drowsy.WAV")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -173,8 +171,7 @@ def web_detect():
                 sleep = 0
                 active = 0
                 if(drowsy > 6):
-                    status = "Drowsy !"
-                    color = (0, 0, 255)
+                    # status = "Drowsy !"
                     mixer.music.load("audio/drowsy.WAV")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -184,12 +181,8 @@ def web_detect():
                 drowsy = 0
                 active += 1
                 if(active > 6):
-                    status = "Active :)"
-                    color = (0, 255, 0)
-                mixer.music.stop()
-
-            cv2.putText(frame, status, (100, 100),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 3)
+                    # status = "Active :)"
+                    mixer.music.stop()
 
             cv2.imshow("Frame", frame)
 
