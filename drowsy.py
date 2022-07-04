@@ -74,8 +74,7 @@ def web_detect():
     sleep = 0
     drowsy = 0
     active = 0
-    status = ""
-    color = (0, 0, 0)
+    # status = ""
 
     yawn_threshold = 22
 
