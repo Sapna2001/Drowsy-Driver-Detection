@@ -23,39 +23,46 @@ from pygame import mixer
 # Creating UI
 root = Tk()
 root.attributes('-fullscreen', True)
-frame = Frame(root, relief = RIDGE, borderwidth = 2)
-frame.pack(fill = BOTH, expand = 1)
+frame = Frame(root, relief=RIDGE, borderwidth=2)
+frame.pack(fill=BOTH, expand=1)
 root.title('Drowsy Driver Detection')
-frame.config(background = 'light blue')
+frame.config(background='light blue')
 label = Label(frame, text="Drowsy Driver Detection",
-              bg = 'light blue', font = ('Times 35 bold'))
-label.pack(side = TOP)
-filename = PhotoImage(file = "demo.png")
-background_label = Label(frame, image = filename)
-background_label.pack(side = TOP)
+              bg='light blue', font=('Times 35 bold'))
+label.pack(side=TOP)
+filename = PhotoImage(file="demo.png")
+background_label = Label(frame, image=filename)
+background_label.pack(side=TOP)
 
 # Open the open cv help box
+
+
 def help_box():
     help(cv2)
 
 # open the about section
+
+
 def about_box():
     tkMessageBox.showinfo(
         "About", 'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
 
+
 # Menu options
 menu = Menu(root)
-root.config(menu = menu)
+root.config(menu=menu)
 
 sub_menu1 = Menu(menu)
-menu.add_cascade(label = "Tools", menu = sub_menu1)
-sub_menu1.add_command(label = "Open CV Docs", command = help_box)
+menu.add_cascade(label="Tools", menu=sub_menu1)
+sub_menu1.add_command(label="Open CV Docs", command=help_box)
 
 sub_menu2 = Menu(menu)
-menu.add_cascade(label = "About", menu = sub_menu2)
-sub_menu2.add_command(label = "About the software", command = about_box)
+menu.add_cascade(label="About", menu=sub_menu2)
+sub_menu2.add_command(label="About the software", command=about_box)
 
 # Close the app
+
+
 def close_window():
     quit()
 
@@ -74,7 +81,6 @@ def web_detect():
     sleep = 0
     drowsy = 0
     active = 0
-    # status = ""
 
     yawn_threshold = 22
 
@@ -150,7 +156,6 @@ def web_detect():
                 active = 0
                 drowsy = 0
                 if(sleep > 6):
-                    # status = "SLEEPING !!!"
                     mixer.music.load("audio/sleeping.wav")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -160,8 +165,7 @@ def web_detect():
                 sleep = 0
                 active = 0
                 if(drowsy > 3):
-                    # status = "Drowsy !"
-                    mixer.music.load("audio/drowsy.WAV")
+                    mixer.music.load("audio/drowsy.mp3")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
 
@@ -170,8 +174,7 @@ def web_detect():
                 sleep = 0
                 active = 0
                 if(drowsy > 6):
-                    # status = "Drowsy !"
-                    mixer.music.load("audio/drowsy.WAV")
+                    mixer.music.load("audio/drowsy.mp3")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
 
@@ -180,7 +183,6 @@ def web_detect():
                 drowsy = 0
                 active += 1
                 if(active > 6):
-                    # status = "Active :)"
                     mixer.music.stop()
 
             cv2.imshow("Frame", frame)
@@ -192,14 +194,15 @@ def web_detect():
             capture.release()
             break
 
-# Buttons
-button_open = Button(frame, padx = 5, pady = 5, width = 39, bg = 'white', fg = 'black',
-                     relief = GROOVE, command = web_detect, text = 'Open Camera & Detect', font = ('helvetica 15 bold'))
-button_open.place(relx = 0.5, rely = 0.3, anchor = CENTER)
 
-button_exit = Button(frame, padx = 5, pady = 5, width = 5, bg='white', fg='black',
-                     relief = GROOVE, text = 'EXIT', command = close_window, font = ('helvetica 15 bold'))
-button_exit.place(relx = 0.5, rely = 0.7, anchor = CENTER)
+# Buttons
+button_open = Button(frame, padx=5, pady=5, width=39, bg='white', fg='black',
+                     relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
+button_open.place(relx=0.5, rely=0.3, anchor=CENTER)
+
+button_exit = Button(frame, padx=5, pady=5, width=5, bg='white', fg='black',
+                     relief=GROOVE, text='EXIT', command=close_window, font=('helvetica 15 bold'))
+button_exit.place(relx=0.5, rely=0.7, anchor=CENTER)
 
 # Run app
 root.mainloop()
