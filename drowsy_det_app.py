@@ -200,7 +200,7 @@ def detecting():
                            sleep += 1
                            active = 0
                            drowsy = 0
-                           if(sleep > 6)
+                           if(sleep > 6):
                                mixer.music.load("audio/sleeping.wav")
                                mixer.music.set_volume(0.8)
                                mixer.music.play()
@@ -230,9 +230,6 @@ def detecting():
                            active += 1
                            if(active > 6):
                                mixer.music.stop()
-
-                       cv2.putText(frame, status, (100, 100),
-                           cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 3)
 
                        cv2.imshow("Frame", frame)
 
