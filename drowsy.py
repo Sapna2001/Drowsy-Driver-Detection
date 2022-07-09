@@ -155,7 +155,7 @@ def web_detect():
                 sleep += 1
                 active = 0
                 drowsy = 0
-                if(sleep > 6):
+                if(sleep > 9):
                     mixer.music.load("audio/sleeping.wav")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -164,7 +164,7 @@ def web_detect():
                 drowsy += 1
                 sleep = 0
                 active = 0
-                if(drowsy > 3):
+                if(drowsy > 4):
                     mixer.music.load("audio/drowsy.mp3")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
@@ -173,7 +173,7 @@ def web_detect():
                 drowsy += 1
                 sleep = 0
                 active = 0
-                if(drowsy > 6):
+                if(drowsy > 4):
                     mixer.music.load("audio/drowsy.mp3")
                     mixer.music.set_volume(0.8)
                     mixer.music.play()
