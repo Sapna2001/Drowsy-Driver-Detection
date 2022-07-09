@@ -73,12 +73,12 @@ def detecting():
             cam_detect.title('Drowsy Driver Detection')
             cam_detect.iconbitmap("Drowsy _icon.ico")
             cam_detect.attributes('-fullscreen', True)
-            frame = Frame(cam_detect, relief = RIDGE, borderwidth = 2)
-            frame.pack(fill = BOTH, expand = 1)
-            frame.config(background = '#F5F5DC')
+            frame = Frame(cam_detect, relief=RIDGE, borderwidth=2)
+            frame.pack(fill=BOTH, expand=1)
+            frame.config(background='#F5F5DC')
             label = Label(frame, text="Drowsy Driver Detection",
-                bg = '#F5F5DC', font = ('Times 35 bold'))
-            label.pack(side = TOP)
+                bg='#F5F5DC', font=('Times 35 bold'))
+            label.pack(side=TOP)
     
             bg_image = ImageTk.PhotoImage(Image.open("demo.png"))
             bg_label = Label(cam_detect, image=bg_image)
@@ -126,9 +126,7 @@ def detecting():
                 sleep = 0
                 drowsy = 0
                 active = 0
-                status = ""
-                color = (0, 0, 0)
-
+                
                 yawn_threshold = 22
 
                 # Eye closing detection
@@ -245,13 +243,13 @@ def detecting():
                        break
 
             # Buttons
-            button_open = Button(cam_detect, padx = 5, pady = 5, width = 39, bg = '#F5F5DC', fg = 'black',
-                     relief = GROOVE, command = web_detect, text = 'Open Camera & Detect', font = ('helvetica 15 bold'))
-            button_open.place(relx = 0.5, rely = 0.4, anchor=CENTER)
+            button_open = Button(cam_detect, padx=5, pady=5, width=39, bg='#F5F5DC', fg='black',
+                     relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
+            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)
 
-            button_exit = Button(cam_detect, padx = 5, pady = 5, width = 5, bg='#F5F5DC', fg='black',
-                     relief = GROOVE, text = 'EXIT', command = cam_detect.destroy, font = ('helvetica 15 bold'))
-            button_exit.place(relx = 0.5, rely = 0.7, anchor=CENTER)
+            button_exit = Button(cam_detect, padx=5, pady=5, width=5, bg='#F5F5DC', fg='black',
+                     relief=GROOVE, text='EXIT', command=cam_detect.destroy, font=('helvetica 15 bold'))
+            button_exit.place(relx=0.5, rely=0.7, anchor=CENTER)
 
     
             cam_detect.mainloop()
