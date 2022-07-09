@@ -13,196 +13,278 @@ from imutils import face_utils
 # Calcuate euclidean distance
 from scipy.spatial import distance as dist
 
-# To create web app
-from Tkinter import *
-import tkMessageBox
-
 # To play alert sound
 from pygame import mixer
 
+# To create web app
+from Tkinter import *
+import tkMessageBox
+from PIL import ImageTk, Image
+
+# To send message alert
+import requests
+
 # Creating UI
 root = Tk()
+root.title("Drowsy Driver Detection")
+# root.iconbitmap('Images/Drowsy _icon.ico')
+root.configure(background="#FFFDD0")
 root.attributes('-fullscreen', True)
-frame = Frame(root, relief=RIDGE, borderwidth=2)
-frame.pack(fill=BOTH, expand=1)
-root.title('Drowsy Driver Detection')
-frame.config(background='light blue')
-label = Label(frame, text="Drowsy Driver Detection",
-              bg='light blue', font=('Times 35 bold'))
-label.pack(side=TOP)
-filename = PhotoImage(file="demo.png")
-background_label = Label(frame, image=filename)
-background_label.pack(side=TOP)
 
-# Open the open cv help box
+# Login page
+drowsy_img = ImageTk.PhotoImage(Image.open("Images/icon.png"))
+img_label = Label(image=drowsy_img)
+img_label.grid(row=5, column=0, padx=200, pady=200)
 
 
-def help_box():
-    help(cv2)
+label_signup = Label(root, text="Enter Your Details", width=20, font=(
+    "helvetica 30 bold"), bg="#FFFDD0", fg="black")
+label_signup.place(relx=0.57, rely=0.35, anchor=W)
 
-# open the about section
+name = Label(root, text="Name", width=15, font=(
+    "bold", 20), bg="#FFFDD0", fg="black")
+name.place(relx=0.5, rely=0.45)
+str_name = StringVar(root)
+entry_name = Entry(root, textvariable=str_name, width=20, font=("bold", 20))
+entry_name.place(relx=0.7, rely=0.45)
 
-
-def about_box():
-    tkMessageBox.showinfo(
-        "About", 'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n In Python 3')
-
-
-# Menu options
-menu = Menu(root)
-root.config(menu=menu)
-
-sub_menu1 = Menu(menu)
-menu.add_cascade(label="Tools", menu=sub_menu1)
-sub_menu1.add_command(label="Open CV Docs", command=help_box)
-
-sub_menu2 = Menu(menu)
-menu.add_cascade(label="About", menu=sub_menu2)
-sub_menu2.add_command(label="About the software", command=about_box)
-
-# Close the app
+emergency = Label(root, text="Emergency Contact", width=18,
+                  font=("bold", 20), bg="#FFFDD0", fg="black")
+emergency.place(relx=0.5, rely=0.55)
+str_emergency = StringVar(root)
+entry_emergency = Entry(root, textvariable=str_emergency,
+                        width=20, font=("bold", 20))
+entry_emergency.place(relx=0.7, rely=0.55)
 
 
-def close_window():
-    quit()
+def detecting():
+    if entry_name.get() == "" and entry_emergency.get() == "":
+        tkMessageBox.showinfo(
+            'Message', 'Fill out the details'
+        )
 
-
-def web_detect():
-    # Initializing the camera and taking the instance
-    capture = cv2.VideoCapture(0)
-
-    # Initializing the face detector and landmark detector
-    detector = dlib.get_frontal_face_detector()
-
-    # Detect 68 landmarks
-    predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-
-    # Current state
-    sleep = 0
-    drowsy = 0
-    active = 0
-
-    yawn_threshold = 22
-
-    # Eye closing detection
-    def calculate_EAR(a, b, c, d, e, f):
-        up = dist.euclidean(b, d) + dist.euclidean(c, e)
-        down = dist.euclidean(a, f)
-
-        # Eye Aspect Ratio
-        EAR = up / (2.0 * down)
-
-        # Checking if it is calculate_EAR
-        # Active
-        if(EAR > 0.25):
-            return 2
-        # Drowsy
-        elif(EAR > 0.21 and EAR <= 0.25):
-            return 1
-        # Sleeping
+    else:
+        str_name = entry_name.get()
+        str_emergency = entry_emergency.get()
+        if len(str_emergency) < 10 or len(str_emergency) > 10:
+            tkMessageBox.showinfo(
+                'Message', 'Invalid Phone Number'
+            )
         else:
-            return 0
+            cam_detect = Toplevel(root)
+            root.destroy()
+            cam_detect = Tk()
+            cam_detect.title('Drowsy Driver Detection')
+            # cam_detect.iconbitmap("Drowsy _icon.ico")
+            cam_detect.attributes('-fullscreen', True)
+            frame = Frame(cam_detect, relief=RIDGE, borderwidth=2)
+            frame.pack(fill=BOTH, expand=1)
+            frame.config(background='#F5F5DC')
+            label = Label(frame, text="Drowsy Driver Detection",
+                          bg='#F5F5DC', font=('Times 35 bold'))
+            label.pack(side=TOP)
 
-    # Yawning detection
-    def calculate_yawning(shape):
-        top_lip = shape[50:53]
-        top_lip = np.concatenate((top_lip, shape[61:64]))
+            bg_image = ImageTk.PhotoImage(Image.open("Images/background.png"))
+            bg_label = Label(cam_detect, image=bg_image)
+            bg_label.pack()
 
-        bottom_lip = shape[56:59]
-        bottom_lip = np.concatenate((bottom_lip, shape[65:68]))
+            # Open the open cv help box
+            def help_box():
+                tkMessageBox.showinfo(
+                    "Help", 'Step 1: Enter name and emergency contact\n Step 2: Open the camera\n Step 3: Press Q to switch off camera\n Step 4: exit'
+                )
 
-        top_mean = np.mean(top_lip, axis=0)
-        bottom_mean = np.mean(bottom_lip, axis=0)
+            # Open the about section
+            def about():
+                tkMessageBox.showinfo(
+                    "About", 'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n-Pygame\n In Python 3'
+                )
+            
+            # Contributors
+            def contributors():
+                tkMessageBox.showinfo(
+                    "Contributors", 'Arathi Karuna M S\nBhagya M S\nDevapriya Suresh V\nHari Sapna Nair'
+                )
 
-        distance = dist.euclidean(top_mean, bottom_mean)
-        return distance
+            menu = Menu(cam_detect)
+            cam_detect.config(menu=menu)
+            sub_menu1 = Menu(menu)
+            menu.add_cascade(label="Help", menu=sub_menu1)
+            sub_menu1.add_command(label="How to use", command=help_box)
 
-    # Capture image till keyboard interrupt received
-    while True:
-        success, frame = capture.read()
+            sub_menu2 = Menu(menu)
+            menu.add_cascade(label="About", menu=sub_menu2)
+            sub_menu2.add_command(label="About the Software", command=about)
+            sub_menu2.add_command(label="Made By", command=contributors)
 
-        # If video capture not successful
-        if not success:
-            break
+            con_label = Label(cam_detect, text="Hi " + str_name + ", ready to drive safely...Click on the button to start detecting...\nHappy Journey",
+                              width=70, font=("Helvitica 20 bold"), bg="#F5F5DC")
+            con_label.place(relx=0.5, rely=0.2, anchor=CENTER)
 
-        # Change to gray scale
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            def close_window():
+                quit()
 
-        # Detect landmarks
-        faces = detector(gray)
+            def web_detect():
+                # Initializing the camera and taking the instance
+                capture = cv2.VideoCapture(0)
 
-        # Detected face in faces array
-        for face in faces:
-            # Find landmarks on the face
-            landmarks = predictor(gray, face)
-            landmarks = face_utils.shape_to_np(landmarks)
+                # Initializing the face detector and landmark detector
+                detector = dlib.get_frontal_face_detector()
 
-            # Calculate EAR
-            left_blink = calculate_EAR(landmarks[36], landmarks[37],
-                                       landmarks[38], landmarks[41], landmarks[40], landmarks[39])
+                # Detect 68 landmarks
+                predictor = dlib.shape_predictor(
+                    "shape_predictor_68_face_landmarks.dat")
 
-            right_blink = calculate_EAR(landmarks[42], landmarks[43],
-                                        landmarks[44], landmarks[47], landmarks[46], landmarks[45])
-
-            # Calculating the lip distance
-            lip_dist = calculate_yawning(landmarks)
-
-            # Mixer settings
-            mixer.init()
-
-            # Conditions
-            if(left_blink == 0 or right_blink == 0):
-                sleep += 1
-                active = 0
-                drowsy = 0
-                if(sleep > 9):
-                    mixer.music.load("audio/sleeping.wav")
-                    mixer.music.set_volume(0.8)
-                    mixer.music.play()
-
-            elif(lip_dist > yawn_threshold):
-                drowsy += 1
-                sleep = 0
-                active = 0
-                if(drowsy > 4):
-                    mixer.music.load("audio/drowsy.mp3")
-                    mixer.music.set_volume(0.8)
-                    mixer.music.play()
-
-            elif(left_blink == 1 or right_blink == 1):
-                drowsy += 1
-                sleep = 0
-                active = 0
-                if(drowsy > 4):
-                    mixer.music.load("audio/drowsy.mp3")
-                    mixer.music.set_volume(0.8)
-                    mixer.music.play()
-
-            else:
+                # Current state
                 sleep = 0
                 drowsy = 0
-                active += 1
-                if(active > 6):
-                    mixer.music.stop()
+                active = 0
 
-            cv2.imshow("Frame", frame)
+                yawn_threshold = 22
 
-        # Wait for any keyboard event to happen
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            mixer.music.stop()
-            cv2.destroyAllWindows()
-            capture.release()
-            break
+                # Eye closing detection
+                def calculate_EAR(a, b, c, d, e, f):
+                    up = dist.euclidean(b, d) + dist.euclidean(c, e)
+                    down = dist.euclidean(a, f)
+
+                    # Eye Aspect Ratio
+                    EAR = up / (2.0 * down)
+
+                    # Checking if it is calculate_EAR
+                    # Active
+                    if(EAR > 0.25):
+                        return 2
+                    # Drowsy
+                    elif(EAR > 0.21 and EAR <= 0.25):
+                        return 1
+                    # Sleeping
+                    else:
+                        return 0
+
+                # Yawning detection
+                def calculate_yawning(shape):
+                    top_lip = shape[50:53]
+                    top_lip = np.concatenate((top_lip, shape[61:64]))
+
+                    bottom_lip = shape[56:59]
+                    bottom_lip = np.concatenate((bottom_lip, shape[65:68]))
+
+                    top_mean = np.mean(top_lip, axis=0)
+                    bottom_mean = np.mean(bottom_lip, axis=0)
+
+                    distance = dist.euclidean(top_mean, bottom_mean)
+                    return distance
+
+                # Capture image till keyboard interrupt received
+                while True:
+                    success, frame = capture.read()
+
+                    # If video capture not successful
+                    if not success:
+                        break
+
+                    # Change to gray scale
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+                    # Detect landmarks
+                    faces = detector(gray)
+
+                    # Detected face in faces array
+                    for face in faces:
+                        # Find landmarks on the face
+                        landmarks = predictor(gray, face)
+                        landmarks = face_utils.shape_to_np(landmarks)
+
+                        # Calculate EAR
+                        left_blink = calculate_EAR(landmarks[36], landmarks[37],
+                                                   landmarks[38], landmarks[41], landmarks[40], landmarks[39])
+
+                        right_blink = calculate_EAR(landmarks[42], landmarks[43],
+                                                    landmarks[44], landmarks[47], landmarks[46], landmarks[45])
+
+                        # Calculating the lip distance
+                        lip_dist = calculate_yawning(landmarks)
+
+                        # Mixer settings
+                        mixer.init()
+
+                        # Conditions
+                        if(left_blink == 0 or right_blink == 0):
+                            sleep += 1
+                            active = 0
+                            drowsy = 0
+                            if(sleep > 6):
+                                mixer.music.load("audio/sleeping.wav")
+                                mixer.music.set_volume(0.8)
+                                mixer.music.play()
+                                for i in range(0, 1):
+                                    url = "https://www.fast2sms.com/dev/bulkV2"
+                                    querystring = {
+                                        "authorization": "UNcKizDXyY18bTj50u9WeIsVGnmo6qxfdZ4pFCtAELghQ3vRrOTzEAeZWt8qB4XMmDw5aKshOuNRc2fl",
+                                        "sender_id": "TEXTIND",
+                                        "message": "Call "+str_name+" immediately",
+                                        "language": "english",
+                                        "route": "v3",
+                                        "numbers": str_emergency
+                                    }
+                                    headers = {
+                                        'cache-control': "no-cache"
+                                    }
+                                    response = requests.request(
+                                        "GET", url, headers=headers, params=querystring)
+                                    print(response.text)
+                                break
+
+                        elif(lip_dist > yawn_threshold):
+                            drowsy += 1
+                            sleep = 0
+                            active = 0
+                            if(drowsy > 3):
+                                mixer.music.load("audio/drowsy.mp3")
+                                mixer.music.set_volume(0.8)
+                                mixer.music.play()
+
+                        elif(left_blink == 1 or right_blink == 1):
+                            drowsy += 1
+                            sleep = 0
+                            active = 0
+                            if(drowsy > 6):
+                                mixer.music.load("audio/drowsy.mp3")
+                                mixer.music.set_volume(0.8)
+                                mixer.music.play()
+
+                        else:
+                            sleep = 0
+                            drowsy = 0
+                            active += 1
+                            if(active > 6):
+                                mixer.music.stop()
+
+                        cv2.imshow("Frame", frame)
+
+                    # Wait for any keyboard event to happen
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        cv2.destroyAllWindows()
+                        capture.release()
+                        break
+
+            # Buttons
+            button_open = Button(cam_detect, padx=5, pady=5, width=39, bg='#F5F5DC', fg='black',
+                                 relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
+            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)
+
+            button_exit = Button(cam_detect, padx=5, pady=5, width=5, bg='#F5F5DC', fg='black',
+                                 relief=GROOVE, text='EXIT', command=cam_detect.destroy, font=('helvetica 15 bold'))
+            button_exit.place(relx=0.5, rely=0.7, anchor=CENTER)
+
+            cam_detect.mainloop()
+
+            return
 
 
-# Buttons
-button_open = Button(frame, padx=5, pady=5, width=39, bg='white', fg='black',
-                     relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
-button_open.place(relx=0.5, rely=0.3, anchor=CENTER)
-
-button_exit = Button(frame, padx=5, pady=5, width=5, bg='white', fg='black',
-                     relief=GROOVE, text='EXIT', command=close_window, font=('helvetica 15 bold'))
-button_exit.place(relx=0.5, rely=0.7, anchor=CENTER)
+button_next = Button(root, text="SUBMIT", font=(
+    "bold", 20), bg="#fbe878", fg="black", relief=RAISED, command=detecting, state=ACTIVE)
+button_next.place(relx=0.67, rely=0.65)
 
 # Run app
 root.mainloop()
