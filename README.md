@@ -2,8 +2,7 @@
 Drowsiness is a major cause of road accidents. Our project is an attempt to reduce the number of accidents occurring due to driver drowsiness.
 
 ## Problem Statement
-Driver's inattention might result from a lack of alertness when driving due to driver drowsiness and distraction. Unlike driver distraction, driver 
-drowsiness involves no triggering event but is characterized by a progressive withdrawal of attention from the road and traffic demands. Both driver 
+Driver's inattention might result from a lack of alertness when driving due to driver drowsiness and distraction. Unlike driver distraction, driver drowsiness involves no triggering event but is characterized by a progressive withdrawal of attention from the road and traffic demands. Both driver 
 drowsiness and distraction might have the same effects. That is, decreased driving performance, longer reaction time, and an increased risk of crash 
 involvement. 
 
