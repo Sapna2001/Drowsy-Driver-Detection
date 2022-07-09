@@ -165,19 +165,13 @@ def detecting():
                     else:
                         return 0
 
-                # Yawning detection
-                def calculate_yawning(shape):
-                    top_lip = shape[50:53]
-                    top_lip = np.concatenate((top_lip, shape[61:64]))
+                def calculate_MAR(a,b,c,d,e,f,g,h):
+                    v_lip = dist.euclidean(c, d) + dist.euclidean(e, f) + dist.euclidean(g, h)   #vertical lip distances
+                    h_lip = dist.euclidean(a, b)    #horizontal lip distance             
 
-                    bottom_lip = shape[56:59]
-                    bottom_lip = np.concatenate((bottom_lip, shape[65:68]))
-
-                    top_mean = np.mean(top_lip, axis=0)
-                    bottom_mean = np.mean(bottom_lip, axis=0)
-
-                    distance = dist.euclidean(top_mean, bottom_mean)
-                    return distance
+                    # Mouth Aspect Ratio
+                    MAR = v_lip/(3*h_lip)
+                    return MAR
 
                 # Capture image till keyboard interrupt received
                 while True:
@@ -206,8 +200,8 @@ def detecting():
                         right_blink = calculate_EAR(landmarks[42], landmarks[43],
                                                     landmarks[44], landmarks[47], landmarks[46], landmarks[45])
 
-                        # Calculating the lip distance
-                        lip_dist = calculate_yawning(landmarks)
+                        # Calculate MAR
+                        MAR = calculate_MAR(landmarks[60], landmarks[64], landmarks[61], landmarks[67], landmarks[62], landmarks[66], landmarks[63], landmarks[65])
 
                         # Mixer settings
                         mixer.init()
@@ -239,7 +233,7 @@ def detecting():
                                     print(response.text)
                                 break
 
-                        elif(lip_dist > yawn_threshold):
+                        elif(MAR > 0.43):
                             drowsy += 1
                             sleep = 0
                             active = 0
