@@ -56,6 +56,8 @@ entry_emergency = Entry(root, textvariable=str_emergency,
                         width=20, font=("bold", 20))
 entry_emergency.place(relx=0.7, rely=0.55)
 
+def close_window():
+    quit()
 
 def detecting():
     if entry_name.get() == "" and entry_emergency.get() == "":
@@ -120,9 +122,6 @@ def detecting():
             con_label = Label(cam_detect, text="Hi " + str_name + ", ready to drive safely...Click on the button to start detecting...\nHappy Journey",
                               width=70, font=("Helvitica 20 bold"), bg="#F5F5DC")
             con_label.place(relx=0.5, rely=0.2, anchor=CENTER)
-
-            def close_window():
-                quit()
 
             def web_detect():
                 # Initializing the camera and taking the instance
@@ -271,11 +270,11 @@ def detecting():
             # Buttons
             button_open = Button(cam_detect, padx=5, pady=5, width=39, bg='#F5F5DC', fg='black',
                                  relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
-            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)
+            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)      
 
             button_exit = Button(cam_detect, padx=5, pady=5, width=5, bg='#F5F5DC', fg='black',
                                  relief=GROOVE, text='EXIT', command=cam_detect.destroy, font=('helvetica 15 bold'))
-            button_exit.place(relx=0.5, rely=0.7, anchor=CENTER)
+            button_exit.place(relx=0.5, rely=0.8, anchor=CENTER)
 
             cam_detect.mainloop()
 
@@ -285,6 +284,10 @@ def detecting():
 button_next = Button(root, text="SUBMIT", font=(
     "bold", 20), bg="#fbe878", fg="black", relief=RAISED, command=detecting, state=ACTIVE)
 button_next.place(relx=0.67, rely=0.65)
+
+button_next = Button(root, text="Exit", font=(
+    "bold", 20), bg="#fbe878", fg="black", relief=RAISED, command=close_window, state=ACTIVE)
+button_next.place(relx=0.5, rely=.8, anchor=CENTER)
 
 # Run app
 root.mainloop()
