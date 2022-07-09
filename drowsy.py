@@ -22,6 +22,9 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import ImageTk, Image
 
+#To send message alert
+import requests
+
 #Creating UI
 root = Tk()
 root.title("Drowsy Driver Detection")
@@ -204,6 +207,22 @@ def detecting():
                                mixer.music.load("audio/sleeping.wav")
                                mixer.music.set_volume(0.8)
                                mixer.music.play()
+                               for i in range(0,1):
+                                   url = "https://www.fast2sms.com/dev/bulkV2"
+                                   querystring = {
+                                        "authorization":"UNcKizDXyY18bTj50u9WeIsVGnmo6qxfdZ4pFCtAELghQ3vRrOTzEAeZWt8qB4XMmDw5aKshOuNRc2fl",
+                                         "sender_id":"TEXTIND",
+                                         "message":"Call "+str_name+" immediately",
+                                         "language":"english",
+                                         "route":"v3",
+                                         "numbers":str_emergency
+                                        }
+                                   headers = {
+                                       'cache-control': "no-cache"
+                                   }
+                                   response = requests.request("GET", url, headers=headers, params=querystring)
+                                   print(response.text)
+                               break
                       
 
                        elif(lip_dist > yawn_threshold):
