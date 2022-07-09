@@ -36,6 +36,11 @@ drowsy_img = ImageTk.PhotoImage(Image.open("Images/icon.png"))
 img_label = Label(image=drowsy_img)
 img_label.grid(row=5, column=0, padx=200, pady=200)
 
+# Hide API Key
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 label_signup = Label(root, text="Enter Your Details", width=20, font=(
     "helvetica 30 bold"), bg="#FFFDD0", fg="black")
@@ -219,7 +224,7 @@ def detecting():
                                 for i in range(0, 1):
                                     url = "https://www.fast2sms.com/dev/bulkV2"
                                     querystring = {
-                                        "authorization": "UNcKizDXyY18bTj50u9WeIsVGnmo6qxfdZ4pFCtAELghQ3vRrOTzEAeZWt8qB4XMmDw5aKshOuNRc2fl",
+                                        "authorization": os.getenv('PROJECT_API_AUTHORIZATION'),
                                         "sender_id": "TEXTIND",
                                         "message": "Call "+str_name+" immediately",
                                         "language": "english",
