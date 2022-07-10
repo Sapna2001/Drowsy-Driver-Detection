@@ -167,9 +167,10 @@ def detecting():
 
                 # Yawning detection
                 def calculate_MAR(a,b,c,d,e,f,g,h):
-                    v_lip = dist.euclidean(c, d) + dist.euclidean(e, f) + dist.euclidean(g, h)
-                    h_lip = dist.euclidean(a, b)
+                    v_lip = dist.euclidean(c, d) + dist.euclidean(e, f) + dist.euclidean(g, h)   #vertical mouth distances
+                    h_lip = dist.euclidean(a, b)   #horizontal mouth distances
 
+                    # Mouth Aspect Ratio
                     MAR = v_lip/(3*h_lip)
                     return MAR
 
