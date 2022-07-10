@@ -144,7 +144,7 @@ def detecting():
                 drowsy = 0
                 active = 0
 
-                yawn_threshold = 22
+              
 
                 # Eye closing detection
                 def calculate_EAR(a, b, c, d, e, f):
