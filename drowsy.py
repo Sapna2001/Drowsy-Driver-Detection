@@ -4,7 +4,7 @@ import cv2
 # Dlib for deep learning based Modules and face landmark detection
 import dlib
 
-# face_utils for basic operationsns of conversion
+# face_utils for basic operations of conversion
 from imutils import face_utils
 
 # Calcuate euclidean distance
@@ -21,6 +21,14 @@ from PIL import ImageTk, Image
 # To send message alert
 import requests
 
+# Hide API Key
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Regex for phone number validation
+import re
+
 # Creating UI
 root = Tk()
 root.title("Drowsy Driver Detection")
@@ -32,12 +40,6 @@ root.attributes('-fullscreen', True)
 drowsy_img = ImageTk.PhotoImage(Image.open("Images/icon.png"))
 img_label = Label(image=drowsy_img)
 img_label.grid(row=5, column=0, padx=200, pady=200)
-
-# Hide API Key
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
 
 label_signup = Label(root, text="Enter Your Details", width=20, font=(
     "helvetica 30 bold"), bg="#FFFDD0", fg="black")
@@ -61,6 +63,11 @@ entry_emergency.place(relx=0.7, rely=0.55)
 def close_window():
     quit()
 
+def isValid(s):     
+    # Check if no begins with 0 or 91, then contains 7 or 8 or 9, then contains 9 digits
+    Pattern = re.compile("(0|91)?[7-9][0-9]{9}")
+    return Pattern.match(s)
+
 def detecting():
     if entry_name.get() == "" and entry_emergency.get() == "":
         tkMessageBox.showinfo(
@@ -70,7 +77,7 @@ def detecting():
     else:
         str_name = entry_name.get()
         str_emergency = entry_emergency.get()
-        if len(str_emergency) < 10 or len(str_emergency) > 10:
+        if not isValid(str_emergency):
             tkMessageBox.showinfo(
                 'Message', 'Invalid Phone Number'
             )
