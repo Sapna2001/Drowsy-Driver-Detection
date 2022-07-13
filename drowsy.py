@@ -1,4 +1,5 @@
 # Importing OpenCV Library for basic image processing functions
+import re
 import cv2
 
 # Dlib for deep learning based Modules and face landmark detection
@@ -27,7 +28,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Regex for phone number validation
-import re
 
 # Creating UI
 root = Tk()
@@ -60,13 +60,16 @@ entry_emergency = Entry(root, textvariable=str_emergency,
                         width=20, font=("bold", 20))
 entry_emergency.place(relx=0.7, rely=0.55)
 
+
 def close_window():
     quit()
 
-def isValid(s):     
+
+def isValid(s):
     # Check if no begins with 0 or 91, then contains 7 or 8 or 9, then contains 9 digits
     Pattern = re.compile("(0|91)?[7-9][0-9]{9}")
     return Pattern.match(s)
+
 
 def detecting():
     if entry_name.get() == "" and entry_emergency.get() == "":
@@ -110,7 +113,7 @@ def detecting():
                 tkMessageBox.showinfo(
                     "About", 'Driver Cam version v1.0\n Made Using\n-OpenCV\n-Numpy\n-Tkinter\n-Pygame\n In Python 3'
                 )
-            
+
             # Contributors
             def contributors():
                 tkMessageBox.showinfo(
@@ -168,9 +171,11 @@ def detecting():
                         return 0
 
                 # Yawning detection
-                def calculate_MAR(a,b,c,d,e,f,g,h):
-                    v_lip = dist.euclidean(c, d) + dist.euclidean(e, f) + dist.euclidean(g, h)   #vertical lip distances
-                    h_lip = dist.euclidean(a, b)    #horizontal lip distance             
+                def calculate_MAR(a, b, c, d, e, f, g, h):
+                    # vertical lip distances
+                    v_lip = dist.euclidean(
+                        c, d) + dist.euclidean(e, f) + dist.euclidean(g, h)
+                    h_lip = dist.euclidean(a, b)  # horizontal lip distance
 
                     # Mouth Aspect Ratio
                     MAR = v_lip/(3*h_lip)
@@ -204,7 +209,8 @@ def detecting():
                                                     landmarks[44], landmarks[47], landmarks[46], landmarks[45])
 
                         # Calculate MAR
-                        MAR = calculate_MAR(landmarks[60], landmarks[64], landmarks[61], landmarks[67], landmarks[62], landmarks[66], landmarks[63], landmarks[65])
+                        MAR = calculate_MAR(landmarks[60], landmarks[64], landmarks[61], landmarks[67],
+                                            landmarks[62], landmarks[66], landmarks[63], landmarks[65])
 
                         # Mixer settings
                         mixer.init()
@@ -223,7 +229,7 @@ def detecting():
                                     querystring = {
                                         "authorization": os.getenv('PROJECT_API_AUTHORIZATION'),
                                         "sender_id": "TEXTIND",
-                                        "message": "Call "+str_name+" immediately",
+                                        "message": "Hello\n" + str_name + " is not driving safely.\nPlease call "+str_name+" immediately and ensure they are safe.",
                                         "language": "english",
                                         "route": "v3",
                                         "numbers": str_emergency
@@ -272,7 +278,7 @@ def detecting():
             # Buttons
             button_open = Button(cam_detect, padx=5, pady=5, width=39, bg='#F5F5DC', fg='black',
                                  relief=GROOVE, command=web_detect, text='Open Camera & Detect', font=('helvetica 15 bold'))
-            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)      
+            button_open.place(relx=0.5, rely=0.4, anchor=CENTER)
 
             button_exit = Button(cam_detect, padx=5, pady=5, width=5, bg='#F5F5DC', fg='black',
                                  relief=GROOVE, text='EXIT', command=cam_detect.destroy, font=('helvetica 15 bold'))
