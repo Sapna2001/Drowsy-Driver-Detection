@@ -27,8 +27,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# Regex for phone number validation
-
 # Creating UI
 root = Tk()
 root.title("Drowsy Driver Detection")
@@ -60,17 +58,17 @@ entry_emergency = Entry(root, textvariable=str_emergency,
                         width=20, font=("bold", 20))
 entry_emergency.place(relx=0.7, rely=0.55)
 
-
+# Quit app
 def close_window():
     quit()
 
-
+# Regex for phone number validation
 def isValid(s):
     # Check if no begins with 0 or 91, then contains 7 or 8 or 9, then contains 9 digits
     Pattern = re.compile("(0|91)?[7-9][0-9]{9}")
     return Pattern.match(s)
 
-
+# Detect face 
 def detecting():
     if entry_name.get() == "" and entry_emergency.get() == "":
         tkMessageBox.showinfo(
