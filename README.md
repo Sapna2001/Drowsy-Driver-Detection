@@ -30,5 +30,6 @@ python drowsy.py
 - Hari Sapna Nair
 
 ## References
-- EAR: https://datahacker.rs/011-how-to-detect-eye-blinking-in-videos-using-dlib-and-opencv-in-python/
-- MAR: http://www.journal-aquaticscience.com/article_136033_c96172a0f080d21c810d21c25036952d.pdf
+[EAR](https://datahacker.rs/011-how-to-detect-eye-blinking-in-videos-using-dlib-and-opencv-in-python/)
+[MAR(http://www.journal-aquaticscience.com/article_136033_c96172a0f080d21c810d21c25036952d.pdf)
+
