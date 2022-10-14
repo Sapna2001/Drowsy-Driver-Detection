@@ -1,7 +1,7 @@
 # Importing OpenCV Library for basic image processing functions
 import cv2
 
-# 
+# Regex function
 import re
 
 # Dlib for deep learning based Modules and face landmark detection
@@ -32,7 +32,6 @@ load_dotenv()
 # Creating UI
 root = Tk()
 root.title("Drowsy Driver Detection")
-# root.iconbitmap('Images/Drowsy _icon.ico')
 root.configure(background="#FFFDD0")
 root.attributes('-fullscreen', True)
 
@@ -85,11 +84,9 @@ def detecting():
                 'Message', 'Invalid Phone Number'
             )
         else:
-            cam_detect = Toplevel(root)
             root.destroy()
             cam_detect = Tk()
             cam_detect.title('Drowsy Driver Detection')
-            # cam_detect.iconbitmap("Drowsy _icon.ico")
             cam_detect.attributes('-fullscreen', True)
             frame = Frame(cam_detect, relief=RIDGE, borderwidth=2)
             frame.pack(fill=BOTH, expand=1)
